@@ -1,7 +1,7 @@
 package com.example.andrej.timely;
 
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by kokik on 6.5.2017..

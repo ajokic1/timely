@@ -10,103 +10,109 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.andrej.timely.Unos">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:id="@+id/unosLinLayout"
-        android:layout_above="@+id/button">
+        android:layout_above="@+id/unosButtonDodaj">
 
-        <TextView
-            android:text="Naziv:"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView4" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/unosButtonDodaj">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/unosNaziv"
-            android:contentDescription="Naziv" />
+            <TextView
+                android:text="Naziv:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4" />
 
-        <TextView
-            android:text="Opis:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView5" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/unosNaziv"
+                android:contentDescription="Naziv" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/unosOpis" />
+            <TextView
+                android:text="Opis:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5" />
 
-        <TextView
-            android:text="Trajanje [h]:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView6" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/unosOpis" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/unosTrajanje" />
+            <TextView
+                android:text="Trajanje [h]:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView6" />
 
-        <Switch
-            android:text="Tačan datum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/unosDatumSwitch" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/unosTrajanje" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/unosDatum" />
+            <Switch
+                android:text="Tačan datum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/unosDatumSwitch" />
 
-        <Switch
-            android:text="Tačno vrijeme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/unosVrijemeSwitch" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/unosDatum" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
-            android:id="@+id/unosVrijeme" />
+            <Switch
+                android:text="Tačno vrijeme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/unosVrijemeSwitch" />
 
-        <TextView
-            android:text="Rok za ispunjenje:"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/unosRokCap" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:ems="10"
+                android:id="@+id/unosVrijeme" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/unosRok" />
+            <TextView
+                android:text="Rok za ispunjenje:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/unosRokCap" />
 
-    </LinearLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/unosRok" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <Button
-        android:text="Button"
+        android:text="Dodaj"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:id="@+id/button"
+        android:id="@+id/unosButtonDodaj"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true" />

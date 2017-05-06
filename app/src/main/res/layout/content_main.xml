@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/activity_vertical_margin"
-            android:background="@color/siva">
+            android:background="@color/colorPrimary">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -41,24 +41,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView3"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:textColor="@color/siva" />
 
                 <TextView
                     android:text="10/15"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView2"
+                    android:id="@+id/pocIspunjenoText"
                     android:gravity="center"
                     android:textSize="36sp"
                     android:layout_marginBottom="0dp"
-                    android:layout_marginTop="0dp" />
+                    android:layout_marginTop="0dp"
+                    android:textColor="@android:color/background_light" />
 
                 <TextView
                     android:text="Obaveza"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:textColor="@color/siva" />
             </LinearLayout>
 
             <FrameLayout
@@ -78,7 +81,11 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/activity_vertical_margin" />
+            android:padding="@dimen/activity_vertical_margin"
+            android:id="@+id/mainLista"
+            android:longClickable="false"
+            android:clickable="true"
+            android:descendantFocusability="blocksDescendants" />
 
     </LinearLayout>
 </RelativeLayout>

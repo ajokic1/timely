@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ObavezaActivity"></activity>
-        <activity android:name=".Unos"></activity>
+        <activity android:name=".Unos"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>
