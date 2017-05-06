@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         //PieDataSet preferences
         pieDataSet.setColors(new int []{getResources().getColor(R.color.colorPrimary),
                 getResources().getColor(R.color.colorAccent)});
+        pieChart.setHoleColor(getResources().getColor(R.color.siva));
         pieChart.setDrawCenterText(false);
         pieDataSet.setDrawValues(false);
         pieChart.setDescription(null);
