@@ -40,19 +40,6 @@
                 android:contentDescription="Naziv" />
 
             <TextView
-                android:text="Opis:"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView5" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/unosOpis" />
-
-            <TextView
                 android:text="Trajanje [h]:"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,15 +48,16 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
                 android:ems="10"
-                android:id="@+id/unosTrajanje" />
+                android:id="@+id/unosTrajanje"
+                android:inputType="numberDecimal" />
 
             <Switch
                 android:text="Tačan datum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/unosDatumSwitch" />
+                android:id="@+id/unosDatumSwitch"
+                android:checked="true" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -82,7 +70,8 @@
                 android:text="Tačno vrijeme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/unosVrijemeSwitch" />
+                android:id="@+id/unosVrijemeSwitch"
+                android:checked="true" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -103,6 +92,19 @@
                 android:inputType="date"
                 android:ems="10"
                 android:id="@+id/unosRok" />
+
+            <TextView
+                android:text="Opis:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/unosOpis" />
 
         </LinearLayout>
     </ScrollView>

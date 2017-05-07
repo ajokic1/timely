@@ -34,7 +34,7 @@ public class NeodredjenaObaveza extends Obaveza {
         this.visePuta = visePuta;
     }
 
-    public NeodredjenaObaveza(String naziv, boolean ispunjena, int trajanje, String komentar, Date rok, boolean visePuta) {
+    public NeodredjenaObaveza(String naziv, boolean ispunjena, float trajanje, String komentar, Date rok, boolean visePuta) {
         super(naziv, ispunjena, trajanje, komentar);
         this.rok = rok;
         this.visePuta = visePuta;

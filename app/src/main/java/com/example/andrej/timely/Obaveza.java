@@ -45,10 +45,25 @@ public class Obaveza {
         this.komentar = komentar;
     }
 
+    public String trajanjeString(){
+        String s="";
+        if((int)trajanje != 0) s=Integer.toString((int)trajanje) + " h";
+        float minuti = trajanje-(int)trajanje;
+        if(trajanje-(int)trajanje !=0){
+            int minutiInt;
+            minutiInt = (int)(minuti*60);
+            s=s+" "+ minutiInt + " m";
+        }
+
+        return s;
+    }
+
     public Obaveza() {
     }
 
-    public Obaveza(String naziv, boolean ispunjena, int trajanje, String komentar) {
+
+
+    public Obaveza(String naziv, boolean ispunjena, float trajanje, String komentar) {
         this.naziv = naziv;
         this.ispunjena = ispunjena;
         this.trajanje = trajanje;

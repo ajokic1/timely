@@ -8,15 +8,15 @@ import java.sql.Date;
  */
 
 public class DnevnaObaveza extends Obaveza {
-    private Date datum;
+    private Datum datum;
     private boolean vrijemePoznato;
-    private Time vrijeme;
+    private Vrijeme vrijeme;
 
-    public Date getDatum() {
+    public Datum getDatum() {
         return datum;
     }
 
-    public void setDatum(Date datum) {
+    public void setDatum(Datum datum) {
         this.datum = datum;
     }
 
@@ -28,21 +28,21 @@ public class DnevnaObaveza extends Obaveza {
         this.vrijemePoznato = vrijemePoznato;
     }
 
-    public Time getVrijeme() {
+    public Vrijeme getVrijeme() {
         return vrijeme;
     }
 
-    public void setVrijeme(Time vrijeme) {
+    public void setVrijeme(Vrijeme vrijeme) {
         this.vrijeme = vrijeme;
     }
 
-    public DnevnaObaveza(Date datum, boolean vrijemePoznato, Time vrijeme) {
+    public DnevnaObaveza(Datum datum, boolean vrijemePoznato, Vrijeme vrijeme) {
         this.datum = datum;
         this.vrijemePoznato = vrijemePoznato;
         this.vrijeme = vrijeme;
     }
 
-    public DnevnaObaveza(String naziv, boolean ispunjena, int trajanje, String komentar, Date datum, boolean vrijemePoznato, Time vrijeme) {
+    public DnevnaObaveza(String naziv, boolean ispunjena, float trajanje, String komentar, Datum datum, boolean vrijemePoznato, Vrijeme vrijeme) {
         super(naziv, ispunjena, trajanje, komentar);
         this.datum = datum;
         this.vrijemePoznato = vrijemePoznato;

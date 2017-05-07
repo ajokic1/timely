@@ -1,7 +1,10 @@
 package com.example.andrej.timely;
 
 import android.app.Activity;
+import android.app.usage.UsageEvents;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
@@ -28,26 +31,35 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     private static String TAG = "MainActivity";
+    public static final String DANAS_OBAVEZE = "com.example.andrej.obaveze_lista";
+    public static final String PREF_FILE = "com.example.andrej.preference_file";
 
     private int chartData[] = {10,50};
     PieChart pieChart;
-    List<DnevnaObaveza> obaveze;
+    List<DnevnaObaveza> obaveze=null;
 
     ArrayList<PieEntry> podaci;
     PieDataSet pieDataSet;
     PieEntry p1;
     PieEntry p2;
     int broj;
+    ArrayAdapter<DnevnaObaveza> adapter;
     //PieData pieData;
     //Obaveza ob;
 
@@ -56,13 +68,9 @@ public class MainActivity extends AppCompatActivity {
         switch(requestCode) {
             case (1) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    /*ob = new Obaveza(
-                            intent.getStringExtra(editPost.IME),
-                            intent.getStringExtra(editPost.FAKULTET),
-                            R.drawable.froot,
-                            intent.getStringExtra(editPost.TEKST));
-                    postovip.add(post);
-                    adapter1p.notifyDataSetChanged();*/
+                    ucitajObaveze();
+                    adapter.notifyDataSetChanged();
+                    refreshChart();
 
 
                 }
@@ -78,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Dodajem obaveze
+        //TODO: Kod za ucitavanje danasnjih obaveza
+        ucitajObaveze();
+
         //Text view - koliko je ispunjeno
         final TextView ispunjenoObaveza = (TextView)findViewById(R.id.pocIspunjenoText);
         ispunjenoObaveza.setText(Integer.toString(chartData[0]) + "/" + Integer.toString(chartData[1]));
@@ -87,23 +99,14 @@ public class MainActivity extends AppCompatActivity {
         pieChart = (PieChart) findViewById(R.id.MainPieChart);
         addDataSet();
 
-        //Dodajem obaveze
-        //TODO: Kod za ucitavanje danasnjih obaveza
-        obaveze = new LinkedList<>();
-        DnevnaObaveza ob1 = new DnevnaObaveza("Kupi paprike",false,4,"Proba", new Date(2017,05,06), true, new Time(14,12,0));
-        DnevnaObaveza ob2 = new DnevnaObaveza("Zavrsi aplikaciju", true, 2, "ProbaProba", new Date(2017,05,06), true, new Time(11,43,0));
-        obaveze.add(ob1);
-        obaveze.add(ob2);
-        obaveze.add(ob1);
-        obaveze.add(ob2);
-        obaveze.add(ob2);
-        chartData[1] =obaveze.size();
+
+
 
         //Lista
         final ListView listView = (ListView)findViewById(R.id.mainLista);
         listView.setItemsCanFocus(true);
         chartData[0]=0;
-        final ArrayAdapter<DnevnaObaveza> adapter = new ArrayAdapter<DnevnaObaveza>(
+        adapter = new ArrayAdapter<DnevnaObaveza>(
                 this, R.layout.pocetna_item, obaveze){
             @NonNull
             @Override
@@ -111,11 +114,14 @@ public class MainActivity extends AppCompatActivity {
                 if(view ==null){
                     view = getLayoutInflater().inflate(R.layout.pocetna_item, parent,false);
                 }
-                DnevnaObaveza obaveza = obaveze.get(position);
+                final DnevnaObaveza obaveza = obaveze.get(position);
                 ((CheckBox)view.findViewById(R.id.PocItemCheck)).setText(obaveza.getNaziv());
                 ((CheckBox)view.findViewById(R.id.PocItemCheck)).setChecked(obaveza.isIspunjena());
-                ((TextView)view.findViewById(R.id.pocItemTrajanje)).setText(trajanjeString(obaveza.getTrajanje()));
-                ((TextView)view.findViewById(R.id.pocItemVrijeme)).setText(obaveza.getVrijeme().toString());
+                ((TextView)view.findViewById(R.id.pocItemTrajanje)).setText(obaveza.trajanjeString());
+                if(obaveza.isVrijemePoznato())((TextView)view.findViewById(R.id.pocItemVrijeme))
+                        .setText(obaveza.getVrijeme().toString());
+                else
+                    ((TextView)view.findViewById(R.id.pocItemVrijeme)).setVisibility(View.INVISIBLE);
 
                 CheckBox chk = (CheckBox)view.findViewById(R.id.PocItemCheck);
                 if(obaveza.isIspunjena())chartData[0]++;
@@ -125,8 +131,14 @@ public class MainActivity extends AppCompatActivity {
                 chk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(isChecked) chartData[0]++;
-                        else chartData[0]--;
+                        if(isChecked) {
+                            chartData[0]++;
+                            obaveza.setIspunjena(true);
+                        }
+                        else {
+                            chartData[0]--;
+                            obaveza.setIspunjena(false);
+                        }
                         ispunjenoObaveza.setText(Integer.toString(chartData[0]) + "/" + Integer.toString(chartData[1]));
                         refreshChart();
                     }
@@ -147,20 +159,7 @@ public class MainActivity extends AppCompatActivity {
         //Da prebroji strikirane dok ih ucitava
         chartData[1]=obaveze.size();
 
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                obaveze.get(position).setIspunjena(((CheckBox)view.findViewById(R.id.PocItemCheck)).isChecked());
-                //^Postavlja ischecked trenutne obaveze na vrijednost checkboxa
-                //TODO: Nekako da se izbroje checkovani i updatuje ChartData
-                chartData[0]=0;
-                for(int i=0;i<obaveze.size();i++){
-                    if(obaveze.get(i).isIspunjena())chartData[0]++;
-                }
-                ispunjenoObaveza.setText(Integer.toString(chartData[0]) + "/" + Integer.toString(chartData[1]));
 
-            }
-        });*/
 
         //FAB
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -214,8 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void refreshChart(){
-        //p1 = new PieEntry(chartData[0],0);
-        //p2 = new PieEntry(chartData[1],1);
+
         p1.setY(chartData[0]);
         p2.setY(chartData[1]-chartData[0]);
 
@@ -246,19 +244,41 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static String trajanjeString(float t){
-        String s="";
-        if((int)t != 0) s=Integer.toString((int)t) + " h";
-        float minuti = t-(int)t;
-        if(t-(int)t !=0){
-            int minutiInt;
-            minutiInt = (int)(minuti*60);
-            s=s+" "+ minutiInt + " m";
-        }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: Sacuvauvam obaveze");
+        SharedPreferences mPrefs = getSharedPreferences(PREF_FILE,0);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(obaveze);
+        prefsEditor.putString(DANAS_OBAVEZE, json);
+        prefsEditor.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume pozvan");
+        ucitajObaveze();
+        adapter.notifyDataSetChanged();
+        refreshChart();
+    }
+
+    private void ucitajObaveze(){
+        SharedPreferences mPrefs = getSharedPreferences(PREF_FILE,0);
+        Gson gson = new Gson();
+        String json = mPrefs.getString(DANAS_OBAVEZE, "");
+        Type type = new TypeToken<Collection<DnevnaObaveza>>(){}.getType();
+        Log.d(TAG, "Ucitavam obaveze");
+        obaveze = gson.fromJson(json, type);
+        if(obaveze==null) obaveze = new ArrayList<DnevnaObaveza>();
+        chartData[1] = obaveze.size();
 
 
 
 
-        return s;
     }
 }
