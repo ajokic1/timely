@@ -157,9 +157,8 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
                 prefsEditor.apply();
 
                 //pozovi MainActivity
-                Intent intent = new Intent();
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                Intent intent = new Intent(Unos.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     //PieData pieData;
     //Obaveza ob;
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    /*protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         switch(requestCode) {
             case (1) : {
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         //Lista
         final ListView listView = (ListView)findViewById(R.id.mainLista);
         listView.setItemsCanFocus(true);
-        chartData[0]=0;
         adapter = new ArrayAdapter<DnevnaObaveza>(
                 this, R.layout.pocetna_item, obaveze){
             @NonNull
@@ -114,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
                     ((TextView)view.findViewById(R.id.pocItemVrijeme)).setVisibility(View.INVISIBLE);
 
                 CheckBox chk = (CheckBox)view.findViewById(R.id.PocItemCheck);
-                if(obaveza.isIspunjena())chartData[0]++;
                 ispunjenoObaveza.setText(Integer.toString(chartData[0]) + "/" + Integer.toString(chartData[1]));
                 refreshChart();
 
@@ -138,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+
+
         listView.setAdapter(adapter);
         refreshChart();
         adapter.notifyDataSetChanged();
@@ -145,9 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         ispunjenoObaveza.setText(Integer.toString(chartData[0]) + "/" + Integer.toString(chartData[1]));
 
-        //TODO: Ucitaj obaveze za danas i adapter.notifyDataSetChanged()
-        //Da prebroji strikirane dok ih ucitava
-        chartData[1]=obaveze.size();
+
 
 
 
@@ -158,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO: Pozovi Unos Activity
                 Intent intent = new Intent(MainActivity.this, Unos.class);
-                startActivityForResult(intent,1);
+                startActivity(intent);
             }
         });
 
@@ -266,6 +264,11 @@ public class MainActivity extends AppCompatActivity {
         obaveze = gson.fromJson(json, type);
         if(obaveze==null) obaveze = new ArrayList<DnevnaObaveza>();
         chartData[1] = obaveze.size();
+        chartData[0] = 0;
+        for(int i=0; i<obaveze.size();i++){
+            if(obaveze.get(i).isIspunjena()) chartData[0]++;
+        }
+
 
 
 
