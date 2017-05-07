@@ -22,13 +22,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.sql.Date;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.LinkedList;
+
 import java.util.List;
 
 import static android.R.attr.startYear;
@@ -39,8 +35,7 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
     EditText unosDatum;
     EditText unosVrijeme;
     View polje;
-    long datum;
-    long vrijeme;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +154,7 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
                 SharedPreferences.Editor prefsEditor = mPrefs.edit();
                 json = gson.toJson(obaveze);
                 prefsEditor.putString(MainActivity.DANAS_OBAVEZE, json);
-                prefsEditor.commit();
+                prefsEditor.apply();
 
                 //pozovi MainActivity
                 Intent intent = new Intent();
