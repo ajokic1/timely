@@ -106,6 +106,7 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
                 }else{
                     unosDatum.setVisibility(GONE);
                     unosVrijemeSwitch.setVisibility(GONE);
+                    unosVrijemeSwitch.setChecked(false);
                     unosRokCap.setVisibility(VISIBLE);
                     unosRok.setVisibility(VISIBLE);
                 }
