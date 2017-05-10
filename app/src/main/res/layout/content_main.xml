@@ -81,7 +81,6 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/activity_vertical_margin"
             android:id="@+id/mainLista"
             android:longClickable="false"
             android:clickable="true"

@@ -18,9 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ObavezaActivity"></activity>
-        <activity android:name=".Unos"
-            android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".ObavezaActivity" />
+        <activity
+            android:name=".Unos"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".IzaberiUnos"
+            android:label="Nova obaveza"></activity>
     </application>
 
 </manifest>

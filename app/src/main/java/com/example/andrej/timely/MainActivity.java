@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -104,9 +106,11 @@ public class MainActivity extends AppCompatActivity {
                     view = getLayoutInflater().inflate(R.layout.pocetna_item, parent,false);
                 }
                 final DnevnaObaveza obaveza = obaveze.get(position);
-                ((CheckBox)view.findViewById(R.id.PocItemCheck)).setText(obaveza.getNaziv());
                 ((CheckBox)view.findViewById(R.id.PocItemCheck)).setChecked(obaveza.isIspunjena());
                 ((TextView)view.findViewById(R.id.pocItemTrajanje)).setText(obaveza.trajanjeString());
+                ((TextView)view.findViewById(R.id.PocItemText)).setText(obaveza.getNaziv());
+                if(position%2==0)(view.findViewById(R.id.itemLinLay)).setBackgroundColor(getResources()
+                        .getColor(R.color.svijetloSiva));
                 if(obaveza.isVrijemePoznato())((TextView)view.findViewById(R.id.pocItemVrijeme))
                         .setText(obaveza.getVrijeme().toString());
                 else
@@ -155,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO: Pozovi Unos Activity
-                Intent intent = new Intent(MainActivity.this, Unos.class);
+                Intent intent = new Intent(MainActivity.this, IzaberiUnos.class);
                 startActivity(intent);
             }
         });
@@ -228,6 +232,9 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.menuObrisiSve) {
+            //TODO: Vidi zasto clear() ne radi
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -237,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause: Sacuvauvam obaveze");
+        Log.d(TAG, "onPause: Sacuvavam obaveze");
         SharedPreferences mPrefs = getSharedPreferences(PREF_FILE,0);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Gson gson = new Gson();

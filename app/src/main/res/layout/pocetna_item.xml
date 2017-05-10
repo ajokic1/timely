@@ -1,49 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/itemLinLay">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:text="Trajanje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="false"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/pocItemTrajanje"
+            android:textSize="12sp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignTop="@+id/pocItemVrijeme" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/pocItemVrijeme"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentBottom="true"
+            android:textSize="12sp"
+            android:layout_alignLeft="@+id/PocItemText"
+            android:layout_below="@+id/PocItemText" />
 
         <CheckBox
-            android:text="[Naziv]"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/PocItemCheck"
             android:layout_weight="1"
             android:textSize="18sp"
             android:checked="false"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_above="@+id/pocItemVrijeme" />
+            android:layout_alignParentTop="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false"
+            android:layout_centerVertical="true" />
 
         <TextView
-            android:text="Trajanje"
+            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/PocItemCheck"
+            android:layout_toEndOf="@+id/PocItemCheck"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:id="@+id/PocItemText"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_clear_black_16dp"
+            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/pocItemTrajanje" />
+            android:id="@+id/pocItemBrisi" />
 
     </RelativeLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/pocItemVrijeme"
-        android:layout_weight="1"
-        android:layout_alignParentBottom="false"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="30dp" />
 
 </LinearLayout>
