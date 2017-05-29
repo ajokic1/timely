@@ -109,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
                 ((CheckBox)view.findViewById(R.id.PocItemCheck)).setChecked(obaveza.isIspunjena());
                 ((TextView)view.findViewById(R.id.pocItemTrajanje)).setText(obaveza.trajanjeString());
                 ((TextView)view.findViewById(R.id.PocItemText)).setText(obaveza.getNaziv());
-                if(position%2==0)(view.findViewById(R.id.itemLinLay)).setBackgroundColor(getResources()
-                        .getColor(R.color.svijetloSiva));
+                //if(position%2==0)(view.findViewById(R.id.itemLinLay)).setBackgroundColor(getResources()
+                //        .getColor(R.color.svijetloSiva));
                 if(obaveza.isVrijemePoznato())((TextView)view.findViewById(R.id.pocItemVrijeme))
                         .setText(obaveza.getVrijeme().toString());
                 else
