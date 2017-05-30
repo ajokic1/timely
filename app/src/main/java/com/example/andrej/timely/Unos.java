@@ -18,13 +18,16 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static android.R.attr.startYear;
@@ -35,6 +38,7 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
     EditText unosDatum;
     EditText unosVrijeme;
     View polje;
+    String izabrano;
 
 
     @Override
@@ -42,22 +46,40 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unos);
 
+
         final EditText unosNaziv = (EditText)findViewById(R.id.unosNaziv);
         final EditText unosOpis = (EditText)findViewById(R.id.unosOpis);
         final EditText unosTrajanje = (EditText)findViewById(R.id.unosTrajanje);
         unosDatum = (EditText)findViewById(R.id.unosDatum);
         unosVrijeme = (EditText)findViewById(R.id.unosVrijeme);
         final EditText unosRok = (EditText)findViewById(R.id.unosRok);
-        final Switch unosDatumSwitch = (Switch)findViewById(R.id.unosDatumSwitch);
-        final Switch unosVrijemeSwitch = (Switch)findViewById(R.id.unosVrijemeSwitch);
+        final TextView unosDatumSwitch = (TextView)findViewById(R.id.unosDatumSwitch);
+        final TextView unosVrijemeSwitch = (TextView)findViewById(R.id.unosVrijemeSwitch);
         final TextView unosRokCap = (TextView)findViewById(R.id.unosRokCap);
         Button dodajBtn = (Button)findViewById(R.id.unosButtonDodaj);
 
-        //unosDatum.setVisibility(GONE);
-        //unosVrijeme.setVisibility(GONE);
-        //unosVrijemeSwitch.setVisibility(GONE);
-        unosRok.setVisibility(GONE);
-        unosRokCap.setVisibility(GONE);
+        Intent intent = getIntent();
+        izabrano = intent.getStringExtra(IzaberiUnos.IZABRANO);
+
+        if(izabrano.equals(IzaberiUnos.IZ_NEODR)){
+            unosDatumSwitch.setVisibility(GONE);
+            unosDatum.setVisibility(GONE);
+            unosVrijemeSwitch.setVisibility(GONE);
+            unosVrijeme.setVisibility(GONE);
+        }
+        else if(izabrano.equals(IzaberiUnos.IZ_DATUM)){
+            unosRok.setVisibility(GONE);
+            unosRokCap.setVisibility(GONE);
+        }
+        else{
+            unosDatumSwitch.setVisibility(GONE);
+            unosDatum.setVisibility(GONE);
+            //unosVrijemeSwitch.setVisibility(GONE);
+            //unosVrijeme.setVisibility(GONE);
+            unosRok.setVisibility(GONE);
+            unosRokCap.setVisibility(GONE);
+        }
+
 
         //DatePicker
         Calendar c = Calendar.getInstance();
@@ -95,67 +117,82 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
             }
         });
 
-        unosDatumSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    unosRok.setVisibility(GONE);
-                    unosRokCap.setVisibility(GONE);
-                    unosDatum.setVisibility(VISIBLE);
-                    unosVrijemeSwitch.setVisibility(VISIBLE);
-                }else{
-                    unosDatum.setVisibility(GONE);
-                    unosVrijemeSwitch.setVisibility(GONE);
-                    unosVrijemeSwitch.setChecked(false);
-                    unosRokCap.setVisibility(VISIBLE);
-                    unosRok.setVisibility(VISIBLE);
-                }
 
-            };
-
-        });
-        unosVrijemeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    unosVrijeme.setVisibility(VISIBLE);
-                }else unosVrijeme.setVisibility(GONE);
-            }
-        });
 
         dodajBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(izabrano.equals(IzaberiUnos.IZ_DATUM))
+                    izabrano = Integer.toString(new Datum(unosDatum.getText().toString()).getIntDatum()); //TODO: Tu nesto ne radi
                 SharedPreferences mPrefs = getSharedPreferences(MainActivity.PREF_FILE,0);
                 Gson gson = new Gson();
-                String json = mPrefs.getString(MainActivity.DANAS_OBAVEZE, "");
-                Type type = new TypeToken<Collection<DnevnaObaveza>>(){}.getType();
-                List<DnevnaObaveza> obaveze = gson.fromJson(json, type);
+                String json = mPrefs.getString(izabrano, "");
+                Type type;
 
 
-                if(unosDatumSwitch.isChecked()) {
+                //Ako je neodredjena, ucitaj neodredjene iz storage-a, kreiraj neodredjenu,
+                //dodaj na spisak i upisi spisak u storage
+                if(izabrano.equals(IzaberiUnos.IZ_NEODR)){
+                    type = new TypeToken<Collection<NeodredjenaObaveza>>(){}.getType();
+                    List<NeodredjenaObaveza> obaveze = gson.fromJson(json,type);
+
+                    if(obaveze==null){
+                        obaveze = new ArrayList<NeodredjenaObaveza>();
+                    }
+
+                    NeodredjenaObaveza ob = new NeodredjenaObaveza(
+                            unosNaziv.getText().toString(),
+                            false,
+                            Float.parseFloat(unosTrajanje.getText().toString()),
+                            unosOpis.getText().toString(),
+                            new Datum(unosRok.getText().toString()),
+                            false //TODO: dodaj nesto za obaveze koje se vise puta isp.
+                            );
+
+                    obaveze.add(ob);
+                    //sacuvaj promijenjenu listu
+                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                    json = gson.toJson(obaveze);
+                    prefsEditor.putString(izabrano, json);
+                    prefsEditor.apply();
+
+                    //Ako je dnevne, ucitaj iz storage-a taj datum, kreiraj dnevnu,
+                    //dodaj na spisak i upisi spisak u storage pod tim datumom
+                }else{
+                    type = new TypeToken<Collection<DnevnaObaveza>>(){}.getType();
+                    List<DnevnaObaveza> obaveze = gson.fromJson(json, type);
+                    if(obaveze==null){
+                        obaveze = new ArrayList<DnevnaObaveza>();
+                    }
+                    Datum d = new Datum(izabrano, true);
+                    Vrijeme vr;
+                    if(unosVrijeme.getText().toString().isEmpty())vr=new Vrijeme(0,0);
+                    else vr = new Vrijeme(
+                            Integer.parseInt(unosVrijeme.getText().toString().substring(0,1)),
+                            Integer.parseInt(unosVrijeme.getText().toString().substring(3,4))
+                    );
                     DnevnaObaveza ob = new DnevnaObaveza(
                             unosNaziv.getText().toString(),
                             false,
                             Float.parseFloat(unosTrajanje.getText().toString()),
                             unosOpis.getText().toString(),
-                            new Datum(unosDatum.getText().toString()),
-                            unosVrijemeSwitch.isChecked(),
-                            new Vrijeme(
-                                    Integer.parseInt(unosVrijeme.getText().toString().substring(0,1)),
-                                    Integer.parseInt(unosVrijeme.getText().toString().substring(3,4))
-                            )
+                            d,
+                            !(unosVrijeme.getText().toString().isEmpty()),
+                            vr
                     );
                     obaveze.add(ob);
-                }else{
-                    //TODO: Kreiraj objekat tipa NeodredjenaObaveza i dodaj u listu neodredjenih, sacuvaj u fajl
+
+                    //sacuvaj promijenjenu listu
+                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                    json = gson.toJson(obaveze);
+                    prefsEditor.putString(izabrano, json);
+                    prefsEditor.apply();
                 }
 
-                //sacuvaj promijenjenu listu
-                SharedPreferences.Editor prefsEditor = mPrefs.edit();
-                json = gson.toJson(obaveze);
-                prefsEditor.putString(MainActivity.DANAS_OBAVEZE, json);
-                prefsEditor.apply();
+
+
+
+
 
                 //pozovi MainActivity
                 Intent intent = new Intent(Unos.this, MainActivity.class);

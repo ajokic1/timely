@@ -57,4 +57,11 @@ public class Datum {
         mjesec = Integer.parseInt(datum.substring(3,4));
         dan = Integer.parseInt(datum.substring(6,9));
     }
+    public Datum(String intdatum, boolean flag){
+        //Za datum u int formatu
+        dan = Integer.parseInt(intdatum.substring(6,7));
+        mjesec = Integer.parseInt(intdatum.substring(4,5));
+        godina = Integer.parseInt(intdatum.substring(0,3));
+        intDatum = Integer.parseInt(intdatum);
+    }
 }

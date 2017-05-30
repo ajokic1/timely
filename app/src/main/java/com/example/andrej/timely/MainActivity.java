@@ -31,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     PieEntry p2;
     int broj;
     ArrayAdapter<DnevnaObaveza> adapter;
+    String danas;
     //PieData pieData;
     //Obaveza ob;
 
@@ -77,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Calendar c = Calendar.getInstance();
+        danas = Integer.toString(new Datum(c.get(Calendar.DAY_OF_MONTH),c.get(Calendar.MONTH),c.get(Calendar.YEAR)).getIntDatum());
 
         //Dodajem obaveze
         //TODO: Kod za ucitavanje danasnjih obaveza
@@ -249,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(obaveze);
-        prefsEditor.putString(DANAS_OBAVEZE, json);
+        prefsEditor.putString(danas, json);
         prefsEditor.apply();
     }
 
@@ -265,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
     private void ucitajObaveze(){
         SharedPreferences mPrefs = getSharedPreferences(PREF_FILE,0);
         Gson gson = new Gson();
-        String json = mPrefs.getString(DANAS_OBAVEZE, "");
+        String json = mPrefs.getString(danas, "");
         Type type = new TypeToken<Collection<DnevnaObaveza>>(){}.getType();
         Log.d(TAG, "Ucitavam obaveze");
         obaveze = gson.fromJson(json, type);

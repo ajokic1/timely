@@ -52,12 +52,11 @@
                 android:id="@+id/unosTrajanje"
                 android:inputType="numberDecimal" />
 
-            <Switch
-                android:text="Tačan datum"
+            <TextView
+                android:text="Datum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/unosDatumSwitch"
-                android:checked="true" />
+                android:id="@+id/unosDatumSwitch" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -66,12 +65,11 @@
                 android:ems="10"
                 android:id="@+id/unosDatum" />
 
-            <Switch
-                android:text="Tačno vrijeme"
+            <TextView
+                android:text="Vrijeme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/unosVrijemeSwitch"
-                android:checked="true" />
+                android:id="@+id/unosVrijemeSwitch" />
 
             <EditText
                 android:layout_width="match_parent"

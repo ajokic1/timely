@@ -7,17 +7,17 @@ import java.util.Date;
  */
 
 public class NeodredjenaObaveza extends Obaveza {
-    Date rok; //Do kad treba da se zavrsi
+    Datum rok; //Do kad treba da se zavrsi
     private boolean visePuta; //Ako se obaveza ne moze zavrsiti odjednom
     //Ako je ovo true, ne brise se iz Neodredjenih
 
 
 
-    public Date getRok() {
+    public Datum getRok() {
         return rok;
     }
 
-    public void setRok(Date rok) {
+    public void setRok(Datum rok) {
         this.rok = rok;
     }
 
@@ -29,12 +29,12 @@ public class NeodredjenaObaveza extends Obaveza {
         this.visePuta = visePuta;
     }
 
-    public NeodredjenaObaveza(Date rok, boolean visePuta) {
+    public NeodredjenaObaveza(Datum rok, boolean visePuta) {
         this.rok = rok;
         this.visePuta = visePuta;
     }
 
-    public NeodredjenaObaveza(String naziv, boolean ispunjena, float trajanje, String komentar, Date rok, boolean visePuta) {
+    public NeodredjenaObaveza(String naziv, boolean ispunjena, float trajanje, String komentar, Datum rok, boolean visePuta) {
         super(naziv, ispunjena, trajanje, komentar);
         this.rok = rok;
         this.visePuta = visePuta;
