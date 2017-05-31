@@ -4,6 +4,8 @@
     tools:context="com.example.andrej.timely.MainActivity">
     <item android:title="Obrisi sve"
         android:id="@+id/menuObrisiSve" />
+    <item android:title="Neodredjene"
+        android:id="@+id/menuNeodredjene" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

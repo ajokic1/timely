@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -141,6 +143,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                ImageView obrisi = (ImageView)view.findViewById(R.id.pocItemBrisi);
+                obrisi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        obaveze.remove(position);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
                 return view;
             }
         };
@@ -239,6 +250,13 @@ public class MainActivity extends AppCompatActivity {
         }
         if (id == R.id.menuObrisiSve) {
             //TODO: Vidi zasto clear() ne radi
+            obaveze.clear();
+            adapter.notifyDataSetChanged();
+        }
+        if (id == R.id.menuNeodredjene){
+            Intent intent = new Intent(MainActivity.this, Neodredjene.class);
+            intent.putExtra("danas", danas);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

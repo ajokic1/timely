@@ -22,8 +22,10 @@
         <activity
             android:name=".Unos"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".IzaberiUnos"
-            android:label="Nova obaveza"></activity>
+        <activity
+            android:name=".IzaberiUnos"
+            android:label="Nova obaveza" />
+        <activity android:name=".Neodredjene"></activity>
     </application>
 
 </manifest>

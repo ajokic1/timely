@@ -43,7 +43,10 @@ public class Datum {
 
     public String toString(){
         String s = Integer.toString(intDatum);
-        return s.substring(6,7) + "." + s.substring(4,5) + "." + s.substring(0,3);
+        try{return s.substring(6,7) + "." + s.substring(4,5) + "." + s.substring(0,3);}
+        catch (StringIndexOutOfBoundsException e){
+            return "";
+        }
     }
 
     public Datum(int dan, int mjesec, int godina) {
