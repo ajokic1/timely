@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     int broj;
     ArrayAdapter<DnevnaObaveza> adapter;
     String danas;
+    TextView ispunjenoObaveza;
     //PieData pieData;
     //Obaveza ob;
 
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         ucitajObaveze();
 
         //Text view - koliko je ispunjeno
-        final TextView ispunjenoObaveza = (TextView)findViewById(R.id.pocIspunjenoText);
+        ispunjenoObaveza = (TextView)findViewById(R.id.pocIspunjenoText);
         ispunjenoObaveza.setText(Integer.toString(chartData[0]) + "/" + Integer.toString(chartData[1]));
 
         //Grafik
@@ -149,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         obaveze.remove(position);
                         adapter.notifyDataSetChanged();
+                        chartData[1]--;
+                        refreshChart();
                     }
                 });
 
@@ -221,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void refreshChart(){
-
+        ispunjenoObaveza.setText(Integer.toString(chartData[0]) + "/" + Integer.toString(chartData[1]));
         p1.setY(chartData[0]);
         p2.setY(chartData[1]-chartData[0]);
 
@@ -252,6 +255,9 @@ public class MainActivity extends AppCompatActivity {
             //TODO: Vidi zasto clear() ne radi
             obaveze.clear();
             adapter.notifyDataSetChanged();
+            chartData[0]=0;
+            chartData[1]=0;
+            refreshChart();
         }
         if (id == R.id.menuNeodredjene){
             Intent intent = new Intent(MainActivity.this, Neodredjene.class);
@@ -291,7 +297,9 @@ public class MainActivity extends AppCompatActivity {
         String json = mPrefs.getString(danas, "");
         Type type = new TypeToken<Collection<DnevnaObaveza>>(){}.getType();
         Log.d(TAG, "Ucitavam obaveze");
-        obaveze = gson.fromJson(json, type);
+        if(obaveze == null) obaveze = new ArrayList<DnevnaObaveza>();
+        obaveze.clear();
+        obaveze.addAll((ArrayList<DnevnaObaveza>)gson.fromJson(json, type));
         if(obaveze==null) obaveze = new ArrayList<DnevnaObaveza>();
         chartData[1] = obaveze.size();
         chartData[0] = 0;

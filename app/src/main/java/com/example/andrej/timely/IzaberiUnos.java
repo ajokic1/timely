@@ -33,6 +33,7 @@ public class IzaberiUnos extends AppCompatActivity {
                         c.get(Calendar.YEAR));
                 intent.putExtra(IZABRANO, Integer.toString(datum.getIntDatum()));
                 startActivity(intent);
+                finish();
             }
         });
         izaberiSjutra.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +46,7 @@ public class IzaberiUnos extends AppCompatActivity {
                         c.get(Calendar.YEAR));
                 intent.putExtra(IZABRANO, Integer.toString(datum.getIntDatum()));
                 startActivity(intent);
+                finish();
             }
         });
         izaberiDatum.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +55,7 @@ public class IzaberiUnos extends AppCompatActivity {
                 Intent intent = new Intent(IzaberiUnos.this, Unos.class);
                 intent.putExtra(IZABRANO, IZ_DATUM);
                 startActivity(intent);
+                finish();
             }
         });
         izaberiNeodr.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +64,7 @@ public class IzaberiUnos extends AppCompatActivity {
                 Intent intent = new Intent(IzaberiUnos.this, Unos.class);
                 intent.putExtra(IZABRANO, IZ_NEODR);
                 startActivity(intent);
+                finish();
             }
         });
 

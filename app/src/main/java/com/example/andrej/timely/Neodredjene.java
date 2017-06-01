@@ -46,8 +46,8 @@ public class Neodredjene extends AppCompatActivity {
         Collections.sort(obaveze, new Comparator<NeodredjenaObaveza>() {
             @Override
             public int compare(NeodredjenaObaveza o1, NeodredjenaObaveza o2) {
-                return o1.getRok().getIntDatum()>o2.getRok().getIntDatum()?-1:
-                        o1.getRok().getIntDatum()<o2.getRok().getIntDatum()?1:0;
+                return o1.getRok().getIntDatum()>o2.getRok().getIntDatum()?1:
+                        o1.getRok().getIntDatum()<o2.getRok().getIntDatum()?-1:0;
             }
         });
 
@@ -63,7 +63,7 @@ public class Neodredjene extends AppCompatActivity {
                 }
                 final NeodredjenaObaveza obaveza = obaveze.get(position);
                 ((TextView)view.findViewById(R.id.neoItemText)).setText(obaveza.getNaziv());
-                ((TextView)view.findViewById(R.id.neoItemTrajanje)).setText(Float.toString(obaveza.getTrajanje()));
+                ((TextView)view.findViewById(R.id.neoItemTrajanje)).setText(obaveza.trajanjeString());
                 ((TextView)view.findViewById(R.id.neoItemDatum)).setText(obaveza.getRok().toString());
 
                 ImageView dodaj = (ImageView)view.findViewById(R.id.neoDodaj);
@@ -110,5 +110,16 @@ public class Neodredjene extends AppCompatActivity {
         };
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences mPrefs = getSharedPreferences(PREF_FILE,0);
+        Gson gson = new Gson();
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        String json = gson.toJson(obaveze);
+        prefsEditor.putString(IzaberiUnos.IZ_NEODR, json);
+        prefsEditor.apply();
     }
 }

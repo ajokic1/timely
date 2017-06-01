@@ -39,6 +39,8 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
     EditText unosVrijeme;
     View polje;
     String izabrano;
+    Vrijeme izVrijeme;
+    Datum izDatum;
 
 
     @Override
@@ -107,6 +109,7 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 unosVrijeme.setText( selectedHour + ":" + selectedMinute);
+                izVrijeme = new Vrijeme(selectedHour, selectedMinute);
             }
         }, c.get(Calendar.HOUR), c.get(Calendar.MINUTE), true);//Yes 24 hour time
         timePickerDialog.setTitle("Select Time");
@@ -123,7 +126,7 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
             @Override
             public void onClick(View v) {
                 if(izabrano.equals(IzaberiUnos.IZ_DATUM))
-                    izabrano = Integer.toString(new Datum(unosDatum.getText().toString()).getIntDatum()); //TODO: Tu nesto ne radi
+                    izabrano = Integer.toString(izDatum.getIntDatum());//TODO: Tu nesto ne radi
                 SharedPreferences mPrefs = getSharedPreferences(MainActivity.PREF_FILE,0);
                 Gson gson = new Gson();
                 String json = mPrefs.getString(izabrano, "");
@@ -145,8 +148,8 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
                             false,
                             Float.parseFloat(unosTrajanje.getText().toString()),
                             unosOpis.getText().toString(),
-                            new Datum(unosRok.getText().toString()),
-                            false //TODO: dodaj nesto za obaveze koje se vise puta isp.
+                            izDatum,
+                            false
                             );
 
                     obaveze.add(ob);
@@ -165,12 +168,8 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
                         obaveze = new ArrayList<DnevnaObaveza>();
                     }
                     Datum d = new Datum(izabrano, true);
-                    Vrijeme vr;
-                    if(unosVrijeme.getText().toString().isEmpty())vr=new Vrijeme(0,0);
-                    else vr = new Vrijeme(
-                            Integer.parseInt(unosVrijeme.getText().toString().substring(0,1)),
-                            Integer.parseInt(unosVrijeme.getText().toString().substring(3,4))
-                    );
+                    if(izVrijeme==null) izVrijeme = new Vrijeme(0,0);
+
                     DnevnaObaveza ob = new DnevnaObaveza(
                             unosNaziv.getText().toString(),
                             false,
@@ -178,7 +177,7 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
                             unosOpis.getText().toString(),
                             d,
                             !(unosVrijeme.getText().toString().isEmpty()),
-                            vr
+                            izVrijeme
                     );
                     obaveze.add(ob);
 
@@ -192,23 +191,24 @@ public class Unos extends AppCompatActivity implements DatePickerDialog.OnDateSe
 
 
 
-
-
+                finish();
+                /*
                 //pozovi MainActivity
                 Intent intent = new Intent(Unos.this, MainActivity.class);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-        ((EditText)polje).setText((dayOfMonth<10?"0":"") + dayOfMonth+"."+ (month<10?"0":"") + month+"."+year);
+        izDatum=new Datum(dayOfMonth,month,year);
+        ((EditText)polje).setText(izDatum.toString());
     }
 
     @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
 
     }
+
 }
