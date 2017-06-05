@@ -297,10 +297,19 @@ public class MainActivity extends AppCompatActivity {
         String json = mPrefs.getString(danas, "");
         Type type = new TypeToken<Collection<DnevnaObaveza>>(){}.getType();
         Log.d(TAG, "Ucitavam obaveze");
-        if(obaveze == null) obaveze = new ArrayList<DnevnaObaveza>();
-        obaveze.clear();
-        obaveze.addAll((ArrayList<DnevnaObaveza>)gson.fromJson(json, type));
-        if(obaveze==null) obaveze = new ArrayList<DnevnaObaveza>();
+        //if(obaveze == null) obaveze = new ArrayList<DnevnaObaveza>();
+        //else obaveze.clear();
+        //if(json!="")obaveze.addAll((ArrayList<DnevnaObaveza>)gson.fromJson(json, type));
+
+        try{
+            obaveze.clear();
+            obaveze.addAll((ArrayList<DnevnaObaveza>)gson.fromJson(json, type));
+        }
+        catch (NullPointerException e){
+            obaveze = new ArrayList<DnevnaObaveza>();
+        }
+
+        //if(obaveze==null) obaveze = new ArrayList<DnevnaObaveza>();
         chartData[1] = obaveze.size();
         chartData[0] = 0;
         for(int i=0; i<obaveze.size();i++){
